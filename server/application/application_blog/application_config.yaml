@@ -1,0 +1,29 @@
+server:
+  name: application_blog
+  port: 40050
+logger:
+  #日志打印方式 file,console
+  type: file
+  #日志文件名称
+  filename: application_blog.log
+  #最大行数
+  maxlines: 1000000
+  #最大字节数
+  maxsize: 524288000
+  #是否开启日常切分
+  daily: true
+  #最大保存天数
+  maxdays: 2
+  #是否开启切分
+  rotate: true
+  #日志级别
+  level: INFO
+  #日志文件路径
+  logpath: /home/server/log/go
+  #文件权限
+  perm: 664
+  #开启异步记录
+  isAsync: true
+service:
+  grpcIp: 127.0.0.1
+  grpcPort: 40051

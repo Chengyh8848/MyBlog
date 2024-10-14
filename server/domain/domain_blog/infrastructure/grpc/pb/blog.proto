@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package blog;
+
+option go_package = "./;blog";
+
+service BlogGRPC {
+    // 用户登录
+    rpc LoginUser(LoginUserRequest) returns (LoginUserReply);
+    // 用户登出
+    rpc LogoutUser(LogoutUserRequest) returns (LogoutUserReply);
+    // 修改密码
+    rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordReply);
+    // token校验
+    rpc AuthToken(AuthTokenRequest) returns (AuthTokenReply);
+    // 按用户名查询user
+    rpc FindByUsername(FindByUsernameRequest) returns (FindByUsernameReply);
+    // 按id查询user
+    rpc FindById(FindByIdRequest) returns (FindByIdReply);
+    // 按username修改
+    rpc UpdateUserByUsername(UpdateUserByUsernameRequest) returns (UpdateUserByUsernameReply);
+
+}
+
+
+message User {
+    int64  id = 1;
+    string createdAt = 2;
+    string updateAt = 3;
+    string username = 4;
+    string password = 5;
+    string nickname = 6;
+    string avatar = 7;
+    string email = 8;
+    string role = 9;
+}
+
+message FindByUsernameRequest {
+    string username = 1;
+}
+
+message  FindByUsernameReply {
+    User user = 1;
+}
+
+message FindByIdRequest {
+    uint64 id = 1;
+}
+
+message FindByIdReply {
+    User user = 1;
+}
+
+message UpdateUserByUsernameRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message UpdateUserByUsernameReply {}
+
+message LoginUserRequest {
+    string username = 1;
+    string password = 2;
+}
+message LoginUserReply { string token = 1; }
+message LogoutUserRequest { string token = 1; }
+message LogoutUserReply {}
+message ChangePasswordRequest {
+    string username = 1;
+    string oldPassword = 2;
+    string newPassword = 3;
+    string token = 4;
+}
+message ChangePasswordReply {}
+message AuthTokenRequest { string token = 1; }
+message AuthTokenReply {}
+message SaveSystemConfRequest {
+    string name = 1;
+    string value = 2;
+}
+
+
+
+//通用查询专用分页
+message Pagination {
+    uint32 page = 1;
+    uint32 limit = 2;
+    uint32 pageCount = 3;
+    uint32 total = 4;
+}
+
+enum Operator {
+    GT = 0;    // 大于
+    EQUAL = 1; // 等于
+    LT = 2;    // 小于
+    NEQ = 3;   // 不等于
+    LIKE = 4;  // 模糊查询
+    GE = 5;    // 大于等于
+    LE = 6;    // 小于等于
+    IN = 7;    // in
+}
+
+enum Relation {
+    AND = 0; // 与
+    OR = 1;  // 或
+}
+
+message Query {
+    string key = 1;              // 表字段名称
+    string value = 2;            // 表字段值
+    Operator operator = 3;       // 判断条件
+    Relation relation = 4;       // 与前一个查询条件的逻辑关系
+    uint32 leftParenthesis = 5;  // 左括号的个数
+    uint32 rightParenthesis = 6; // 右括号的个数
+}
+
+
+
+
+
+
+
+

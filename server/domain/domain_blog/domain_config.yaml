@@ -1,0 +1,50 @@
+#数据库配置--根据生产环境信息配置
+database:
+  #数据库名称
+  dbName: database_blog.db
+  autoMigrate: true
+server:
+  name: domain_blog
+  port: 40051
+system:
+  threshold: 80
+  #初始化用户 1-初始化 0-不初始化
+  initUser : 1
+redis:
+  #普通模式-0 哨兵模式-1 集群模式-2
+  haType: 0
+  host: 127.0.0.1
+  port: 6379
+  password:
+  seconds: 5
+  # 1-启动 0-不启动
+  enable: 0
+logger:
+  #日志打印方式 file,console
+  type: file
+  #日志文件名称
+  filename: domain_blog.log
+  #最大行数
+  maxlines: 1000000
+  #最大字节数
+  maxsize: 524288000
+  #是否开启日常切分
+  daily: true
+  #最大保存天数
+  maxdays: 2
+  #是否开启切分
+  rotate: true
+  #日志级别
+  level: INFO
+  #日志文件路径
+  logpath: /home/server/log/go
+  #文件权限
+  perm: 664
+  #开启异步记录
+  isAsync: true
+daServer:
+  host: 127.0.0.1
+  port: 7000
+  timeout: 10
+  # 1-启动 0-不启动
+  enable: 1
