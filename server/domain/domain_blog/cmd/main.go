@@ -117,16 +117,36 @@ func Start() error {
 			}
 		}
 	}
+	// 启动redis
+	if conf.Cfg.Redis.Enable == 1 {
+		if err := RegisterRedis(); err != nil {
+			fmt.Printf("连接redis失败 err:%s\n", err.Error())
+			return err
+		}
+	}
 
 	return nil
 }
 
-func RegisterRedis() {
+func RegisterRedis() error {
 	var addresses []string
 	for _, v := range conf.Cfg.Redis.Hosts {
 		addresses = append(addresses, fmt.Sprintf("%s:%d", v.Host, v.Port))
 	}
-
+	serverInfo := common.RedisConfig{
+		Address:  addresses,
+		Password: conf.Cfg.Redis.Password,
+	}
+	if conf.Cfg.Redis.HaType == 0 {
+		serverInfo.Type = common.RedisModeOfSignal
+	} else {
+		serverInfo.Type = common.RedisModeOfCluster
+	}
+	err := common.InitRedis(serverInfo)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func Stop() {

@@ -1,24 +1,29 @@
 #数据库配置--根据生产环境信息配置
 database:
+  # 数据库类型 mysql sqlite
+  type: mysql
   #数据库名称
-  dbName: database_blog.db
+  dbName: database_blog
+  ip: 127.0.0.1
+  port: 3306
+  username: root
+  password:
   autoMigrate: true
 server:
   name: domain_blog
   port: 40051
 system:
-  threshold: 80
   #初始化用户 1-初始化 0-不初始化
   initUser : 1
 redis:
-  #普通模式-0 哨兵模式-1 集群模式-2
+  #单例模式-0 集群模式-1
   haType: 0
   host: 127.0.0.1
   port: 6379
   password:
   seconds: 5
   # 1-启动 0-不启动
-  enable: 0
+  enable: 1
 logger:
   #日志打印方式 file,console
   type: file
@@ -42,9 +47,3 @@ logger:
   perm: 664
   #开启异步记录
   isAsync: true
-daServer:
-  host: 127.0.0.1
-  port: 7000
-  timeout: 10
-  # 1-启动 0-不启动
-  enable: 1

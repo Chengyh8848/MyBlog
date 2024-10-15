@@ -25,6 +25,11 @@ const (
 	UnitM   = 1024 * 1024 //单位M
 )
 
+const (
+	Mysql  = "mysql"
+	Sqlite = "sqlite"
+)
+
 var Cfg *Config
 
 type Config struct {
@@ -37,8 +42,7 @@ type Config struct {
 }
 
 type System struct {
-	Threshold string `yaml:"threshold"`
-	InitUser  int    `yaml:"initUser"`
+	InitUser int `yaml:"initUser"`
 }
 
 type Redis struct {
@@ -61,7 +65,12 @@ type HostInfo struct {
 }
 
 type Database struct {
+	Type        string `yaml:"type"`
 	DbName      string `yaml:"dbName"`
+	Username    string `yaml:"username"`
+	Password    string `yaml:"password"`
+	IP          string `json:"ip"`
+	Port        int    `json:"port"`
 	AutoMigrate bool   `yaml:"autoMigrate"`
 }
 
