@@ -2,6 +2,8 @@ package common
 
 import (
 	"context"
+	"domain_blog/infrastructure/database/entity"
+	"encoding/json"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -85,4 +87,30 @@ func (r *RedisClient) GetSet(key string) (string, error) {
 		value, err := r.Client.(*redis.ClusterClient).Get(Client.Ctx, key).Result()
 		return value, err
 	}
+}
+
+func (r *RedisClient) GetAbouts(key string) ([]entity.About, error) {
+	value, err := r.GetSet(key)
+	if err != nil {
+		return nil, err
+	}
+	abouts := make([]entity.About, 0)
+	bytes := []byte(value)
+	err = json.Unmarshal(bytes, &abouts)
+	if err != nil {
+		return nil, err
+	}
+	return abouts, nil
+}
+
+func (r *RedisClient) SetAbouts(key string, abouts []entity.About) error {
+	bytes, err := json.Marshal(&abouts)
+	if err != nil {
+		return err
+	}
+	err = r.Set(key, string(bytes))
+	if err != nil {
+		return err
+	}
+	return nil
 }

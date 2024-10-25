@@ -19,19 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BlogGRPC_LoginUser_FullMethodName            = "/blog.BlogGRPC/LoginUser"
-	BlogGRPC_LogoutUser_FullMethodName           = "/blog.BlogGRPC/LogoutUser"
-	BlogGRPC_ChangePassword_FullMethodName       = "/blog.BlogGRPC/ChangePassword"
-	BlogGRPC_AuthToken_FullMethodName            = "/blog.BlogGRPC/AuthToken"
-	BlogGRPC_FindByUsername_FullMethodName       = "/blog.BlogGRPC/FindByUsername"
-	BlogGRPC_FindById_FullMethodName             = "/blog.BlogGRPC/FindById"
-	BlogGRPC_UpdateUserByUsername_FullMethodName = "/blog.BlogGRPC/UpdateUserByUsername"
+	BlogGRPC_LoginUser_FullMethodName              = "/blog.BlogGRPC/LoginUser"
+	BlogGRPC_LogoutUser_FullMethodName             = "/blog.BlogGRPC/LogoutUser"
+	BlogGRPC_ChangePassword_FullMethodName         = "/blog.BlogGRPC/ChangePassword"
+	BlogGRPC_AuthToken_FullMethodName              = "/blog.BlogGRPC/AuthToken"
+	BlogGRPC_FindByUsername_FullMethodName         = "/blog.BlogGRPC/FindByUsername"
+	BlogGRPC_FindById_FullMethodName               = "/blog.BlogGRPC/FindById"
+	BlogGRPC_UpdateUserByUsername_FullMethodName   = "/blog.BlogGRPC/UpdateUserByUsername"
+	BlogGRPC_GetAboutInfo_FullMethodName           = "/blog.BlogGRPC/GetAboutInfo"
+	BlogGRPC_GetAboutSetting_FullMethodName        = "/blog.BlogGRPC/GetAboutSetting"
+	BlogGRPC_UpdateAbout_FullMethodName            = "/blog.BlogGRPC/UpdateAbout"
+	BlogGRPC_GetAboutCommentEnabled_FullMethodName = "/blog.BlogGRPC/GetAboutCommentEnabled"
 )
 
 // BlogGRPCClient is the client API for BlogGRPC service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BlogGRPCClient interface {
+	// user begin
 	// 用户登录
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserReply, error)
 	// 用户登出
@@ -46,6 +51,11 @@ type BlogGRPCClient interface {
 	FindById(ctx context.Context, in *FindByIdRequest, opts ...grpc.CallOption) (*FindByIdReply, error)
 	// 按username修改
 	UpdateUserByUsername(ctx context.Context, in *UpdateUserByUsernameRequest, opts ...grpc.CallOption) (*UpdateUserByUsernameReply, error)
+	// about begin
+	GetAboutInfo(ctx context.Context, in *GetAboutInfoRequest, opts ...grpc.CallOption) (*GetAboutInfoReply, error)
+	GetAboutSetting(ctx context.Context, in *GetAboutSettingRequest, opts ...grpc.CallOption) (*GetAboutSettingReply, error)
+	UpdateAbout(ctx context.Context, in *UpdateAboutRequest, opts ...grpc.CallOption) (*UpdateAboutReply, error)
+	GetAboutCommentEnabled(ctx context.Context, in *GetAboutCommentEnabledRequest, opts ...grpc.CallOption) (*GetAboutCommentEnabledReply, error)
 }
 
 type blogGRPCClient struct {
@@ -126,10 +136,51 @@ func (c *blogGRPCClient) UpdateUserByUsername(ctx context.Context, in *UpdateUse
 	return out, nil
 }
 
+func (c *blogGRPCClient) GetAboutInfo(ctx context.Context, in *GetAboutInfoRequest, opts ...grpc.CallOption) (*GetAboutInfoReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAboutInfoReply)
+	err := c.cc.Invoke(ctx, BlogGRPC_GetAboutInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *blogGRPCClient) GetAboutSetting(ctx context.Context, in *GetAboutSettingRequest, opts ...grpc.CallOption) (*GetAboutSettingReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAboutSettingReply)
+	err := c.cc.Invoke(ctx, BlogGRPC_GetAboutSetting_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *blogGRPCClient) UpdateAbout(ctx context.Context, in *UpdateAboutRequest, opts ...grpc.CallOption) (*UpdateAboutReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateAboutReply)
+	err := c.cc.Invoke(ctx, BlogGRPC_UpdateAbout_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *blogGRPCClient) GetAboutCommentEnabled(ctx context.Context, in *GetAboutCommentEnabledRequest, opts ...grpc.CallOption) (*GetAboutCommentEnabledReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAboutCommentEnabledReply)
+	err := c.cc.Invoke(ctx, BlogGRPC_GetAboutCommentEnabled_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlogGRPCServer is the server API for BlogGRPC service.
 // All implementations must embed UnimplementedBlogGRPCServer
 // for forward compatibility.
 type BlogGRPCServer interface {
+	// user begin
 	// 用户登录
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserReply, error)
 	// 用户登出
@@ -144,6 +195,11 @@ type BlogGRPCServer interface {
 	FindById(context.Context, *FindByIdRequest) (*FindByIdReply, error)
 	// 按username修改
 	UpdateUserByUsername(context.Context, *UpdateUserByUsernameRequest) (*UpdateUserByUsernameReply, error)
+	// about begin
+	GetAboutInfo(context.Context, *GetAboutInfoRequest) (*GetAboutInfoReply, error)
+	GetAboutSetting(context.Context, *GetAboutSettingRequest) (*GetAboutSettingReply, error)
+	UpdateAbout(context.Context, *UpdateAboutRequest) (*UpdateAboutReply, error)
+	GetAboutCommentEnabled(context.Context, *GetAboutCommentEnabledRequest) (*GetAboutCommentEnabledReply, error)
 	mustEmbedUnimplementedBlogGRPCServer()
 }
 
@@ -174,6 +230,18 @@ func (UnimplementedBlogGRPCServer) FindById(context.Context, *FindByIdRequest) (
 }
 func (UnimplementedBlogGRPCServer) UpdateUserByUsername(context.Context, *UpdateUserByUsernameRequest) (*UpdateUserByUsernameReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserByUsername not implemented")
+}
+func (UnimplementedBlogGRPCServer) GetAboutInfo(context.Context, *GetAboutInfoRequest) (*GetAboutInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAboutInfo not implemented")
+}
+func (UnimplementedBlogGRPCServer) GetAboutSetting(context.Context, *GetAboutSettingRequest) (*GetAboutSettingReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAboutSetting not implemented")
+}
+func (UnimplementedBlogGRPCServer) UpdateAbout(context.Context, *UpdateAboutRequest) (*UpdateAboutReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAbout not implemented")
+}
+func (UnimplementedBlogGRPCServer) GetAboutCommentEnabled(context.Context, *GetAboutCommentEnabledRequest) (*GetAboutCommentEnabledReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAboutCommentEnabled not implemented")
 }
 func (UnimplementedBlogGRPCServer) mustEmbedUnimplementedBlogGRPCServer() {}
 func (UnimplementedBlogGRPCServer) testEmbeddedByValue()                  {}
@@ -322,6 +390,78 @@ func _BlogGRPC_UpdateUserByUsername_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BlogGRPC_GetAboutInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAboutInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogGRPCServer).GetAboutInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogGRPC_GetAboutInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogGRPCServer).GetAboutInfo(ctx, req.(*GetAboutInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BlogGRPC_GetAboutSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAboutSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogGRPCServer).GetAboutSetting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogGRPC_GetAboutSetting_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogGRPCServer).GetAboutSetting(ctx, req.(*GetAboutSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BlogGRPC_UpdateAbout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAboutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogGRPCServer).UpdateAbout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogGRPC_UpdateAbout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogGRPCServer).UpdateAbout(ctx, req.(*UpdateAboutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BlogGRPC_GetAboutCommentEnabled_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAboutCommentEnabledRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogGRPCServer).GetAboutCommentEnabled(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogGRPC_GetAboutCommentEnabled_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogGRPCServer).GetAboutCommentEnabled(ctx, req.(*GetAboutCommentEnabledRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BlogGRPC_ServiceDesc is the grpc.ServiceDesc for BlogGRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -356,6 +496,22 @@ var BlogGRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUserByUsername",
 			Handler:    _BlogGRPC_UpdateUserByUsername_Handler,
+		},
+		{
+			MethodName: "GetAboutInfo",
+			Handler:    _BlogGRPC_GetAboutInfo_Handler,
+		},
+		{
+			MethodName: "GetAboutSetting",
+			Handler:    _BlogGRPC_GetAboutSetting_Handler,
+		},
+		{
+			MethodName: "UpdateAbout",
+			Handler:    _BlogGRPC_UpdateAbout_Handler,
+		},
+		{
+			MethodName: "GetAboutCommentEnabled",
+			Handler:    _BlogGRPC_GetAboutCommentEnabled_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
