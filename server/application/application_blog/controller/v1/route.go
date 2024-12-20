@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"application_blog/controller/v1/about"
 	"application_blog/controller/v1/user"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,7 @@ import (
 func NoNeedLoginRoute(g *gin.RouterGroup) {
 	// 登录
 	g.POST("/user/login", user.LoginUser)
-
+	g.POST("/about", about.About)
 }
 
 func OnlyNeedLoginRoute(g *gin.RouterGroup) {
@@ -17,4 +18,5 @@ func OnlyNeedLoginRoute(g *gin.RouterGroup) {
 
 	g.POST("/user/logout", user.Logout)
 	g.POST("/user/changePassword", user.ChangePassword)
+
 }

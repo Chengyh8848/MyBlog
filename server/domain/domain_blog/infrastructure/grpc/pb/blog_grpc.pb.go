@@ -19,17 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BlogGRPC_LoginUser_FullMethodName              = "/blog.BlogGRPC/LoginUser"
-	BlogGRPC_LogoutUser_FullMethodName             = "/blog.BlogGRPC/LogoutUser"
-	BlogGRPC_ChangePassword_FullMethodName         = "/blog.BlogGRPC/ChangePassword"
-	BlogGRPC_AuthToken_FullMethodName              = "/blog.BlogGRPC/AuthToken"
-	BlogGRPC_FindByUsername_FullMethodName         = "/blog.BlogGRPC/FindByUsername"
-	BlogGRPC_FindById_FullMethodName               = "/blog.BlogGRPC/FindById"
-	BlogGRPC_UpdateUserByUsername_FullMethodName   = "/blog.BlogGRPC/UpdateUserByUsername"
-	BlogGRPC_GetAboutInfo_FullMethodName           = "/blog.BlogGRPC/GetAboutInfo"
-	BlogGRPC_GetAboutSetting_FullMethodName        = "/blog.BlogGRPC/GetAboutSetting"
-	BlogGRPC_UpdateAbout_FullMethodName            = "/blog.BlogGRPC/UpdateAbout"
-	BlogGRPC_GetAboutCommentEnabled_FullMethodName = "/blog.BlogGRPC/GetAboutCommentEnabled"
+	BlogGRPC_LoginUser_FullMethodName                      = "/blog.BlogGRPC/LoginUser"
+	BlogGRPC_LogoutUser_FullMethodName                     = "/blog.BlogGRPC/LogoutUser"
+	BlogGRPC_ChangePassword_FullMethodName                 = "/blog.BlogGRPC/ChangePassword"
+	BlogGRPC_AuthToken_FullMethodName                      = "/blog.BlogGRPC/AuthToken"
+	BlogGRPC_FindByUsername_FullMethodName                 = "/blog.BlogGRPC/FindByUsername"
+	BlogGRPC_FindById_FullMethodName                       = "/blog.BlogGRPC/FindById"
+	BlogGRPC_UpdateUserByUsername_FullMethodName           = "/blog.BlogGRPC/UpdateUserByUsername"
+	BlogGRPC_GetAboutInfo_FullMethodName                   = "/blog.BlogGRPC/GetAboutInfo"
+	BlogGRPC_GetAboutSetting_FullMethodName                = "/blog.BlogGRPC/GetAboutSetting"
+	BlogGRPC_UpdateAbout_FullMethodName                    = "/blog.BlogGRPC/UpdateAbout"
+	BlogGRPC_GetAboutCommentEnabled_FullMethodName         = "/blog.BlogGRPC/GetAboutCommentEnabled"
+	BlogGRPC_GetGroupYearMonthByIsPublished_FullMethodName = "/blog.BlogGRPC/GetGroupYearMonthByIsPublished"
 )
 
 // BlogGRPCClient is the client API for BlogGRPC service.
@@ -56,6 +57,8 @@ type BlogGRPCClient interface {
 	GetAboutSetting(ctx context.Context, in *GetAboutSettingRequest, opts ...grpc.CallOption) (*GetAboutSettingReply, error)
 	UpdateAbout(ctx context.Context, in *UpdateAboutRequest, opts ...grpc.CallOption) (*UpdateAboutReply, error)
 	GetAboutCommentEnabled(ctx context.Context, in *GetAboutCommentEnabledRequest, opts ...grpc.CallOption) (*GetAboutCommentEnabledReply, error)
+	// blog begin
+	GetGroupYearMonthByIsPublished(ctx context.Context, in *GetGroupYearMonthByIsPublishedRequest, opts ...grpc.CallOption) (*GetGroupYearMonthByIsPublishedReply, error)
 }
 
 type blogGRPCClient struct {
@@ -176,6 +179,16 @@ func (c *blogGRPCClient) GetAboutCommentEnabled(ctx context.Context, in *GetAbou
 	return out, nil
 }
 
+func (c *blogGRPCClient) GetGroupYearMonthByIsPublished(ctx context.Context, in *GetGroupYearMonthByIsPublishedRequest, opts ...grpc.CallOption) (*GetGroupYearMonthByIsPublishedReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetGroupYearMonthByIsPublishedReply)
+	err := c.cc.Invoke(ctx, BlogGRPC_GetGroupYearMonthByIsPublished_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlogGRPCServer is the server API for BlogGRPC service.
 // All implementations must embed UnimplementedBlogGRPCServer
 // for forward compatibility.
@@ -200,6 +213,8 @@ type BlogGRPCServer interface {
 	GetAboutSetting(context.Context, *GetAboutSettingRequest) (*GetAboutSettingReply, error)
 	UpdateAbout(context.Context, *UpdateAboutRequest) (*UpdateAboutReply, error)
 	GetAboutCommentEnabled(context.Context, *GetAboutCommentEnabledRequest) (*GetAboutCommentEnabledReply, error)
+	// blog begin
+	GetGroupYearMonthByIsPublished(context.Context, *GetGroupYearMonthByIsPublishedRequest) (*GetGroupYearMonthByIsPublishedReply, error)
 	mustEmbedUnimplementedBlogGRPCServer()
 }
 
@@ -242,6 +257,9 @@ func (UnimplementedBlogGRPCServer) UpdateAbout(context.Context, *UpdateAboutRequ
 }
 func (UnimplementedBlogGRPCServer) GetAboutCommentEnabled(context.Context, *GetAboutCommentEnabledRequest) (*GetAboutCommentEnabledReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAboutCommentEnabled not implemented")
+}
+func (UnimplementedBlogGRPCServer) GetGroupYearMonthByIsPublished(context.Context, *GetGroupYearMonthByIsPublishedRequest) (*GetGroupYearMonthByIsPublishedReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupYearMonthByIsPublished not implemented")
 }
 func (UnimplementedBlogGRPCServer) mustEmbedUnimplementedBlogGRPCServer() {}
 func (UnimplementedBlogGRPCServer) testEmbeddedByValue()                  {}
@@ -462,6 +480,24 @@ func _BlogGRPC_GetAboutCommentEnabled_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BlogGRPC_GetGroupYearMonthByIsPublished_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupYearMonthByIsPublishedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogGRPCServer).GetGroupYearMonthByIsPublished(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogGRPC_GetGroupYearMonthByIsPublished_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogGRPCServer).GetGroupYearMonthByIsPublished(ctx, req.(*GetGroupYearMonthByIsPublishedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BlogGRPC_ServiceDesc is the grpc.ServiceDesc for BlogGRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -512,6 +548,10 @@ var BlogGRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAboutCommentEnabled",
 			Handler:    _BlogGRPC_GetAboutCommentEnabled_Handler,
+		},
+		{
+			MethodName: "GetGroupYearMonthByIsPublished",
+			Handler:    _BlogGRPC_GetGroupYearMonthByIsPublished_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -29,7 +29,19 @@ service BlogGRPC {
     rpc UpdateAbout(UpdateAboutRequest) returns (UpdateAboutReply);
     rpc GetAboutCommentEnabled(GetAboutCommentEnabledRequest) returns (GetAboutCommentEnabledReply);
     // about end
+
+    // blog begin
+    rpc GetGroupYearMonthByIsPublished(GetGroupYearMonthByIsPublishedRequest) returns (GetGroupYearMonthByIsPublishedReply);
+    // blog end
 }
+
+message GetGroupYearMonthByIsPublishedRequest {
+}
+
+message GetGroupYearMonthByIsPublishedReply {
+    repeated string value = 1;
+}
+
 
 message AboutDetail {
     int64 id = 1;
